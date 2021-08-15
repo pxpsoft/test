@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pxp.word.mapper.WordMapperXml">
+
+    <select id="get10Word" resultType="word">
+        select * from word limit 0,10
+    </select>
+
+    <select id="getWordById" parameterType="int" resultType="word">
+      select * from word WHERE idWord = #{id}
+    </select>
+
+    <select id="getWordByName" parameterType="String" resultType="word">
+      select * from word WHERE name = #{name} limit 0,1
+    </select>
+
+    <select id="findByPager" resultType="word">
+    select * from word where classId=#{classId} limit #{startNum},#{size}
+    </select>
+
+    <select id="count" parameterType="int" resultType="long">
+          select  count(1)  from word where classId=#{classId}
+    </select>
+
+    <insert id="insertWord">
+        insert into word (`name`,`desc`,`symbol`,`classId`)
+        values (#{name},#{desc},#{symbol},#{classId})
+        <selectKey keyProperty="idWord" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        <!--获取到自增id 值 并添加到 对象中去 -->
+    </insert>
+
+    <update id="updateWord">
+             update  word
+              SET `name` = #{name},`desc` = #{desc},`symbol` = #{symbol},`classId` = #{classId} WHERE `idWord` = #{idWord}
+    </update>
+
+    <delete id="deleteWord">
+       delete from word where idWord = #{idWord}
+    </delete>
+
+
+</mapper>
